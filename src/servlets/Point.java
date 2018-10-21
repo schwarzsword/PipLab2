@@ -37,8 +37,8 @@ public class Point {
         ) {
             this.isInArea = "inv operands";
         } else {
-            if ((x >= 0 && y >= 0 && x <= (r / 2) && y <= r) ||
-                    (x <= 0 && y >= 0 && y <= (x - (r / 2))) ||
+            if (    (x >= 0 && y >= 0 && x <= (r / 2) && y <= r) ||
+                    (x <= 0 && y >= 0 && y <= (x + (r / 2))) ||
                     (x >= 0 && y <= 0 && (x * x + y * y) <= r * r)
             ) {
                 this.isInArea = "true";

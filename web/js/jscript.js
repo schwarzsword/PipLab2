@@ -39,7 +39,7 @@
 function validation() {
     var e = document.getElementById('form');
     var stopSubmit = false;
-    var x = e.X.value;
+    var x = document.getElementById('trueX').value
     var y = e.Y.value;
     var r = e.R.value;
     var msgy = '', msgr = '';
