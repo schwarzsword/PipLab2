@@ -21,7 +21,7 @@
     <p class="title"><b>Выберите входные данные</b></p>
     <form name="form" class="form" id="form" method="get" action="Lab2_0" target="_self">
         <p class="text">Выберите координату X:</p>
-        <select class="Y element" name="X" id="X">
+        <select class="Y element" id="X" onchange="setX()">
             <option value="-3">-3</option>
             <option value="-2">-2</option>
             <option value="-1">-1</option>
@@ -32,6 +32,7 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
+        <input class="text" readonly id="trueX" name="X" style="visibility: hidden; display: none" value="0">
         <p class="text">Введите координату Y:</p>
         <input type="text" autocomplete="off" name="Y" id="Y" class="X element" placeholder="(-5..3)"
                onkeydown="resetValidationY()" maxlength="8">

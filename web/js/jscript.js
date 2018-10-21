@@ -333,12 +333,15 @@ function interract() {
         document.getElementById('errR').style.visibility = 'visible';
         document.getElementById('errR').innerHTML = msgr;
     } else {
-        var x = Math.round(((pos.x - 200) * r) / 140);
-        var y = Math.round(((-pos.y + 200) * r) / 140);
-        e.X.value = x;
+        var x = Math.round(((pos.x - 200) * r) / 140 * 10) / 10;
+        var y = Math.round(((-pos.y + 200) * r) / 140 * 10) / 10;
+        document.getElementById('trueX').value = x;
         e.Y.value = y;
         validation();
-
     }
+}
+
+function setX() {
+    document.getElementById('trueX').value = document.getElementById('X').value;
 }
 
