@@ -1,22 +1,19 @@
-<%@ page import="servlets.Point" %>
-<%@ page import="servlets.Points" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <jsp:useBean id="MyPoints" class="servlets.Points" scope="session"/>
 <html>
 <head>
     <title>Lab2.0</title>
-    <style> <%@include file='css/styles.css' %> </style>
-    <script type="text/javascript"> <%@include file='js/jscript.js' %> </script>
+    <style> <c:import url='css/styles.css' /> </style>
+    <script type="text/javascript"> <c:import url='js/jscript.js' /> </script>
 </head>
 <body>
 <div class="container header">
     <a href="https://isu.ifmo.ru/pls/apex/f?p=2143:GR:103237292305101::NO:RP:GR_GR,GR_DATE:P3111," id="group"
        title="Ссылка на группу">Группа:P3211</a>
     <a href="https://isu.ifmo.ru/person/schwarzkv" id="name" title="Ссылка на автора">Черный Кирилл</a>
-    <span id="task">Вариант:28123</span>
+    <span id="task">Вариант:21106</span>
 </div>
-<div id="weatheranim" class="nope"></div>
 <div class="container main" id="main">
     <p class="title"><b>Выберите входные данные</b></p>
     <form name="form" class="form" id="form" method="get" action="Lab2_0" target="_self">
@@ -40,23 +37,11 @@
 
         <p class="text">Введите радиус R:</p>
         <input type="text" autocomplete="off" name="R" id="R" class="X element" placeholder="(1..4)"
-               onkeydown="resetValidationR()"
-            <%
-                out.print("oninput=\"validationR();");
-                Object obj2 = request.getSession().getAttribute("MyPoints");
-            if (!(obj2 == null)) {
-                ArrayList points2 = ((Points) obj2).getPoints();
-                 if (points2.size() != 0){
-                    for (int i = 0; i < points2.size(); ++i) {
-                        Point point1 = (Point) points2.get(i);
-                        if (!point1.getIsInArea().equals("inv operands")) {
-                            out.print("drawPoint(\'graph\'," + point1.getX() + "," + point1.getY() + ",form.R.value);");
-                        }
-                    } out.print("\"");
-                }
-            }
-
-            %> maxlength="8">
+               onkeydown="resetValidationR()" oninput="validationR();
+        <c:forEach var="point" items="${MyPoints}">
+                drawPoint('graph', ${point.getX()}, ${point.getY()}, document.getElementById('R').value);
+        </c:forEach>
+                " maxlength="8">
         <div class="error" id="errR">123</div>
 
         <input type="button" onclick="validation()" value="Отправить" class="R" id="sub" name="sub">
@@ -72,49 +57,34 @@
             <th>R radius</th>
             <th>Entering</th>
         </tr>
-        <%
-            Object obj = request.getSession().getAttribute("MyPoints");
-            if (!(obj == null)) {
-                ArrayList points = ((Points) obj).getPoints();
-                for (int i = 0; i < points.size(); ++i) {
-                    Point point1 = (Point) points.get(i);
-                    String ent;
-                    if (point1.getIsInArea().equals("true")) {
-                        ent = "<span class=\"yes\">yes</span>";
-                    } else if (point1.getIsInArea().equals("false")) {
-                        ent = "<span class=\"no\">no</span>";
-                    } else ent = "<span class=\"inv\">Inv operands</span>";
-                    out.println("<tr>");
-                    out.println("<td>" + point1.getX() + "</td>");
-                    out.println("<td>" + point1.getY() + "</td>");
-                    out.println("<td>" + point1.getR() + "</td>");
-                    out.println("<td>" + ent + "</td>");
-                    out.println("</tr>");
-                }
-                if (points.size() == 0) {
-                    out.println("<tr><td colspan=4>История точек пуста</td></tr>");
-                    out.println("<script type=\"text/javascript\"> window.onload = function(ev){ " +
-                            " draw('graph', form.R.value);");
-                    out.println("}</script>");
-                } else {
-                    Point p = (Point) points.get(points.size() - 1);
-                    double lasrR;
-                    if(!p.getIsInArea().equals("inv operands")){
-                    lasrR = p.getR();} else lasrR = 4;
-                    out.println("<script type=\"text/javascript\"> window.onload = function(ev){ " +
-                                    "document.getElementById('form').R.value="+lasrR+";"+
-                            " draw('graph'," + lasrR + ");");
-                    for (int i = 0; i < points.size(); ++i) {
-                        Point point1 = (Point) points.get(i);
-                        if (!point1.getIsInArea().equals("inv operands")) {
-                            out.println("drawPoint(\'graph\'," + point1.getX() + "," + point1.getY() + "," + lasrR + ");");
-                        }
+        <c:choose>
+            <c:when test="${MyPoints.isEmpty()}">
+                <tr>
+                    <td colspan="4">История точек будет отбражаться здесь</td>
+                    <script> window.onload = function (ev) {
+                        draw('graph', form.R.value);
                     }
-                    out.println("}</script>");
-                }
-
-            }
-        %>
+                    </script>
+                </tr>
+            </c:when>
+            <c:otherwise>
+                <script> window.onload = function (ev) {
+                    draw('graph', form.R.value);
+                    document.getElementById('R').value = ${MyPoints.get(MyPoints.size()-1).getR()};
+                    <c:forEach var="point" items="${MyPoints}">
+                    drawPoint('graph', ${point.getX()}, ${point.getY()}, document.getElementById('R').value);
+                    </c:forEach>
+                }</script>
+                <c:forEach var="point" items="${MyPoints}">
+                    <tr>
+                        <td><c:out value="${point.getX()}"/></td>
+                        <td><c:out value="${point.getY()}"/></td>
+                        <td><c:out value="${point.getR()}"/></td>
+                        <td><c:out value="${point.getIsInArea()}"/></td>
+                    </tr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
     </table>
 </div>
 </body>

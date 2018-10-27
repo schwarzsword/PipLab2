@@ -1,41 +1,3 @@
-// function getWeather() {
-//     navigator.geolocation.getCurrentPosition(function(position) {
-//
-//         let newRequest = new XMLHttpRequest();
-//
-//         newRequest.open("GET",
-//             "https://api.openweathermap.org/data/2.5/weather?lat="+position.coords.latitude+"&lon="+position.coords.longitude+"&APPID=fe08324658c4b830a51a9e2d056a3103");
-//
-//         newRequest.onload = () => {
-//             var ourWeather = JSON.parse(newRequest.responseText);
-//             let wet = ourWeather.weather[0].main;
-//             console.log(wet);
-//             if(wet == "Clear"){
-//                 document.body.style.backgroundImage = "url('img/clear.jpg')";
-//                 document.getElementById("weatheranim").className = "sunny";
-//             } else if(
-//                 wet == "Rain"){document.body.style.backgroundImage = "url('img/rain2.gif')";
-//                 document.getElementById("weatheranim").className = "rainy";
-//                 let clouds =document.getElementsByClassName("none");
-//                 for (var i = 0; i < clouds.length; i++) {
-//                     clouds[i].className="rain";
-//                 }
-//             }
-//             else{
-//                 document.body.style.backgroundImage = "url('img/clouds.jpg')";
-//                 let clouds =document.getElementsByClassName("none1");
-//                 for (var i = 0; i < clouds.length; i++) {
-//                     clouds[i].className="cloud";
-//                 }
-//             }
-//         }
-//
-//         newRequest.onerror = err => console.error('Ошибка');
-//
-//         newRequest.send();
-//     });
-// }
-
 function validation() {
     var e = document.getElementById('form');
     var stopSubmit = false;
@@ -78,15 +40,6 @@ function validation() {
     }
 }
 
-function fromPhp(id) {
-    document.getElementById(id).height = document.getElementById(id).contentWindow.document.body.scrollHeight + 35 + 'px';
-}
-
-function setR(but) {
-    var val1 = parseFloat(but.value);
-    document.getElementById('Rf').value = val1;
-    document.getElementById('Rf').style.display = 'inline';
-}
 
 function resetValidationY() {
     document.getElementById('errY').style.visibility = 'hidden';
@@ -236,15 +189,23 @@ function drawPoint(canv, x, y, r) {
 }
 
 function easter(canv) {
+    var audio = new Audio('music/sound.mp3');
+    audio.play();
+    document.getElementById("sub").disabled=true;
+    document.body.style.backgroundImage = "url(\"img/creepy.png\")";
     draw(canv, 666);
-    setTimeout(pentagramm(canv), 500);
+    pentagramm(canv);
     dot(canv, 200, 300);
-    setTimeout(dot(canv, 106, 235), 500);
-    setTimeout(dot(canv, 141, 119), 500);
-    setTimeout(dot(canv, 258, 119), 500);
-    setTimeout(dot(canv, 293, 235), 500);
-    setTimeout(circle(canv), 1000);
-
+    dot(canv, 106, 235);
+    dot(canv, 141, 119);
+    dot(canv, 258, 119);
+    dot(canv, 293, 235);
+    circle(canv);
+    audio.onended = function() {
+        document.getElementById("sub").disabled=false;
+        document.body.style.backgroundImage = "url(\"img/4563.png\")";
+        draw('graph', 0);
+    };
 }
 
 function dot(canv, x, y) {
