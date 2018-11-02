@@ -61,15 +61,12 @@
             <c:when test="${MyPoints.isEmpty()}">
                 <tr>
                     <td colspan="4">История точек будет отбражаться здесь</td>
-                    <script> window.onload = function (ev) {
-                        draw('graph', form.R.value);
-                    }
+                    <script> window.onload = function (ev) { draw('graph', form.R.value);  }
                     </script>
                 </tr>
             </c:when>
             <c:otherwise>
-                <script> window.onload = function (ev) {
-                    draw('graph', form.R.value);
+                <script> window.onload = function (ev) { draw('graph', form.R.value);
                     document.getElementById('R').value = ${MyPoints.get(MyPoints.size()-1).getR()};
                     <c:forEach var="point" items="${MyPoints}">
                     drawPoint('graph', ${point.getX()}, ${point.getY()}, document.getElementById('R').value);

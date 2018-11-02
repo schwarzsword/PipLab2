@@ -306,3 +306,9 @@ function setX() {
     document.getElementById('trueX').value = document.getElementById('X').value;
 }
 
+window.onkeydown = function (e) {
+    var code = e.key;
+    if (code === 'Enter') {
+        validation();
+    }
+};
