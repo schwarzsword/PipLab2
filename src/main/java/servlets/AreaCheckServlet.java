@@ -50,10 +50,10 @@ public class AreaCheckServlet extends HttpServlet {
                 out.println("</tr>");
             }
 
-            out.println("</table> <a href=/Lab2_0/><button class=\"ret\">Return</button></a></body> </html>");
+            out.println("</table> <a href=/><button class=\"ret\">Return</button></a></body> </html>");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/Lab2_0");
+            response.sendRedirect("/");
         }
     }
 }

@@ -11,7 +11,7 @@ public class ControllerServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("/Lab2_0");
+        response.sendRedirect("/");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -20,7 +20,7 @@ public class ControllerServlet extends HttpServlet {
         String y = request.getParameter("Y");
         String r = request.getParameter("R");
         if (x == null || y == null || r == null) {
-            response.sendRedirect("/Lab2_0");
+            response.sendRedirect("/");
         } else {
             request.getServletContext().getRequestDispatcher("/check").forward(request, response);
         }
